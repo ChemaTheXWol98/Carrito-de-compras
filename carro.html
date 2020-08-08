@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css"
+        integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
+        integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous">
+        </script>
+
+    <script>
+        window.onload = function () {
+            // Variables
+            let baseDeDatos = [
+                {
+                    id: 1,
+                    nombre: 'Littlewood',
+                    precio: 154.99,
+                    imagen: 'https://steamcdn-a.akamaihd.net/steam/apps/894940/capsule_184x69.jpg?t=1596561234'
+                },
+                {
+                    id: 2,
+                    nombre: 'Fall Guys - Fast Food Costume Pack',
+                    precio: 57.99,
+                    imagen: 'https://steamcdn-a.akamaihd.net/steam/apps/1362660/capsule_184x69.jpg?t=1596524623'
+                },
+                {
+                    id: 3,
+                    nombre: 'Fall Guys: Ultimate Knockout',
+                    precio: 185.99,
+                    imagen: 'https://steamcdn-a.akamaihd.net/steam/apps/1097150/capsule_184x69.jpg?t=1596592527'
+                },
+                {
+                    id: 4,
+                    nombre: 'Destroy All Humans!',
+                    precio: 529.00,
+                    imagen: 'https://steamcdn-a.akamaihd.net/steam/apps/803330/capsule_184x69.jpg?t=1595961051'
+                },
+                {
+                    id: 5,
+                    nombre: 'The Elder Scrolls V: Skyrim Special Edition',
+                    precio: 799.00,
+                    imagen: 'https://steamcdn-a.akamaihd.net/steam/apps/489830/capsule_184x69.jpg?t=1590515887'
+                },
+                {
+                    id: 6,
+                    nombre: 'Sea of Thieves',
+                    precio: 999.99,
+                    imagen: 'https://steamcdn-a.akamaihd.net/steam/apps/1172620/capsule_184x69.jpg?t=1596057038'
+                },
+                {
+                    id: 7,
+                    nombre: 'Fallout 4: Game of the Year Edition',
+                    precio: 1099.00,
+                    imagen: 'https://steamcdn-a.akamaihd.net/steam/subs/199943/capsule_184x69.jpg?t=1510163765'
+                }
+                ,
+                {
+                    id: 8,
+                    nombre: 'Death Stranding',
+                    precio: 1146,
+                    imagen: 'https://steamcdn-a.akamaihd.net/steam/apps/1190460/capsule_184x69.jpg?t=1595954430'
+                },
+                {
+                    id: 9,
+                    nombre: 'Dark Souls III Deluxe Edition',
+                    precio: 1499,
+                    imagen: 'https://steamcdn-a.akamaihd.net/steam/subs/94174/capsule_sm_120.jpg?t=1476893662'
+                },
+                {
+                    id: 10,
+                    nombre: 'Red Dead Redemption 2',
+                    precio: 1299,
+                    imagen: 'https://steamcdn-a.akamaihd.net/steam/apps/1174180/capsule_sm_120.jpg?t=1595367144'
+                },
+                {
+                    id: 11,
+                    nombre: 'Monster Hunter World: Iceborne',
+                    precio: 799,
+                    imagen: 'https://steamcdn-a.akamaihd.net/steam/apps/1118010/capsule_sm_120.jpg?t=1596524584'
+                }
+
+            ]
+            let $items = document.querySelector('#items');
+            let carrito = [];
+            let total = 0;
+            let $carrito = document.querySelector('#carrito');
+            let $total = document.querySelector('#total');
+            // Funciones
+            function renderItems() {
+                for (let info of baseDeDatos) {
+                    // Estructura
+                    let miNodo = document.createElement('div');
+                    miNodo.classList.add('card', 'col-sm-4');
+                    // Body
+                    let miNodoCardBody = document.createElement('div');
+                    miNodoCardBody.classList.add('card-body');
+                    // Titulo
+                    let miNodoTitle = document.createElement('h5');
+                    miNodoTitle.classList.add('card-title');
+                    miNodoTitle.textContent = info['nombre'];
+                    // Imagen
+                    let miNodoImagen = document.createElement('img');
+                    miNodoImagen.classList.add('img-fluid');
+                    miNodoImagen.setAttribute('src', info['imagen']);
+                    // Precio
+                    let miNodoPrecio = document.createElement('p');
+                    miNodoPrecio.classList.add('card-text');
+                    miNodoPrecio.textContent = info['precio'] + '$';
+                    // Boton 
+                    let miNodoBoton = document.createElement('button');
+                    miNodoBoton.classList.add('btn', 'btn-primary');
+                    miNodoBoton.textContent = 'Agregar';
+                    miNodoBoton.setAttribute('marcador', info['id']);
+                    miNodoBoton.addEventListener('click', anyadirCarrito);
+                    // Insertamos
+                    miNodoCardBody.appendChild(miNodoImagen);
+                    miNodoCardBody.appendChild(miNodoTitle);
+                    miNodoCardBody.appendChild(miNodoPrecio);
+                    miNodoCardBody.appendChild(miNodoBoton);
+                    miNodo.appendChild(miNodoCardBody);
+                    $items.appendChild(miNodo);
+                }
+            }
+
+            function anyadirCarrito() {
+                // Añadimos el Nodo a nuestro carrito
+                carrito.push(this.getAttribute('marcador'))
+                // Calculo el total
+                calcularTotal();
+                // Renderizamos el carrito 
+                renderizarCarrito();
+            }
+
+            function renderizarCarrito() {
+                // Vaciamos todo el html
+                $carrito.textContent = '';
+                // Quitamos los duplicados
+                let carritoSinDuplicados = [...new Set(carrito)];
+                // Generamos los Nodos a partir de carrito
+                carritoSinDuplicados.forEach(function (item, indice) {
+                    // Obtenemos el item que necesitamos de la variable base de datos
+                    let miItem = baseDeDatos.filter(function (itemBaseDatos) {
+                        return itemBaseDatos['id'] == item;
+                    });
+                    // Cuenta el número de veces que se repite el producto
+                    let numeroUnidadesItem = carrito.reduce(function (total, itemId) {
+                        return itemId === item ? total += 1 : total;
+                    }, 0);
+                    // Creamos el nodo del item del carrito
+                    let miNodo = document.createElement('li');
+                    miNodo.classList.add('list-group-item', 'text-right', 'mx-2');
+                    miNodo.textContent = `${numeroUnidadesItem} x ${miItem[0]['nombre']} - ${miItem[0]['precio']}$`;
+                    // Boton de borrar
+                    let miBoton = document.createElement('button');
+                    miBoton.classList.add('btn', 'btn-danger', 'mx-5');
+                    miBoton.textContent = 'X';
+                    miBoton.style.marginLeft = '1rem';
+                    miBoton.setAttribute('item', item);
+                    miBoton.addEventListener('click', borrarItemCarrito);
+                    // Mezclamos nodos
+                    miNodo.appendChild(miBoton);
+                    $carrito.appendChild(miNodo);
+                })
+            }
+
+            function borrarItemCarrito() {
+                console.log()
+                // Obtenemos el producto ID que hay en el boton pulsado
+                let id = this.getAttribute('item');
+                // Borramos todos los productos
+                carrito = carrito.filter(function (carritoId) {
+                    return carritoId !== id;
+                });
+                // volvemos a renderizar
+                renderizarCarrito();
+                // Calculamos de nuevo el precio
+                calcularTotal();
+            }
+
+            function calcularTotal() {
+                // Limpiamos precio anterior
+                total = 0;
+                // Recorremos el array del carrito
+                for (let item of carrito) {
+                    // De cada elemento obtenemos su precio
+                    let miItem = baseDeDatos.filter(function (itemBaseDatos) {
+                        return itemBaseDatos['id'] == item;
+                    });
+                    total = total + miItem[0]['precio'];
+                }
+                // Formateamos el total para que solo tenga dos decimales
+                let totalDosDecimales = total.toFixed(2);
+                // Renderizamos el precio en el HTML
+                $total.textContent = totalDosDecimales;
+            }
+            // Eventos
+
+            // Inicio
+            renderItems();
+        } 
+    </script>
+</head>
+
+<body style="background: #F2F2F2">
+    <!--Barra de navegacion-->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">
+            <img src="img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+            GameStorePlay
+        </a>
+    </nav>
+    <hr>
+    <br><br>
+    <div>
+        <h2 style="text-align: center;">
+            GameStorePlay® 
+            <h4 style="text-align: center;">Ofrece los mejores productos para los verdaderos jugadores</h4>
+        </h2>
+    </div>
+    <hr>
+    <div class="container" style="width: 100%; height: 100%;">
+        <div class="row">
+            <!-- Elementos generados a partir del JSON -->
+            <main id="items" class="col-sm-8 row"></main>
+            <!-- Carrito -->
+            <aside class="col-sm-4">
+                <h2 style="text-align: center;">Productos en Carrito</h2>
+                <!-- Elementos del carrito -->
+                <ul id="carrito" class="list-group" style="background-color: crimson;"></ul>
+                <hr>
+                <!-- Precio total -->
+                <p class="text-left">Total: <span id="total"></span>&dollar;</p>
+                <!-- Button trigger modal -->
+                <hr>
+                <button type="button" class="btn btn-success btn-block" data-toggle="modal"
+                    data-target="#staticBackdrop">
+                    Comprar
+                </button>
+                <hr><br><br>
+            </aside>
+        </div>
+    </div>
+
+
+    <!--Confirmacion de la compra-->
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        <div class="spinner-border text-info" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        Confirmacion de la compra
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Confirmar el pago del (los) producto(s)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal"
+                        data-target="#validado">
+                        Confirmar Compra
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="validado" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        <img src="https://icon-icons.com/icons2/936/PNG/32/correct-symbol_icon-icons.com_73609.png">
+                        Confirmacion de la compra</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    La compra se realizo con exito, se enviara el ticket de compra a su correo.
+                    <br>
+                    ¡Gracias por su compra!
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal"
+                        onclick="location.reload();">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<br>
+<hr>
+<div style="background-color: #0B173B">
+    <footer>
+        <div style="align-items: center;">
+            <h3 style="text-align: center; color: white;">
+                <br>GameStorePlay® <br>
+            </h4>
+            <p style="text-align: center; color: white;">
+                Condiciones de uso
+            </p>
+            <br>
+        </div>
+    </footer>
+</div>
+</html>
